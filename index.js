@@ -34,6 +34,7 @@ async function run() {
 
     const userDataCollection = client.db("PureLeafDB").collection("usersData");
     const cardDataCollection = client.db("PureLeafDB").collection("cardData");
+    const cartItemDataCollection = client.db("PureLeafDB").collection("cartItemData");
 
     // jwt related api
     app.post('/jwt', async (req, res) => {
@@ -71,11 +72,7 @@ async function run() {
       res.send(result);
     });
 
-    // get all data here
-    // app.get('/cardData', async (req, res) => {
-    //   const result = await cardDataCollection.find().toArray();
-    //   res.send(result);
-    // })
+   
 
     // data short by category here
     app.get('/cardData', async (req, res) => {
@@ -85,14 +82,18 @@ async function run() {
       if (category && category !== 'null') {
           query.category = category;
       }
-  
+      
       const result = await cardDataCollection.find(query).toArray();
       res.send(result);
   });
   
 
+app.post('/cartItemData', async(req,res) =>{
+  const cartData = req.body;
+  const cartItemData = await cartItemDataCollection.insertOne(cartData);
+  res.send(cartItemData)
 
-
+})
 
 
 
