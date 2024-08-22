@@ -96,7 +96,10 @@ app.post('/cartItemData', async(req,res) =>{
 })
 
 
-
+app.get('/cartItemData', async(req, res) =>{
+  const  result = await cartItemDataCollection.find().toArray();
+  res.send(result)
+})
 
 
 
