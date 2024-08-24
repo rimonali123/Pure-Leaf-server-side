@@ -126,6 +126,14 @@ async function run() {
     })
 
 
+    app.delete('/wishListData/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await wishListDataCollection.deleteOne(query);
+      res.send(result);
+    })
+
+
     app.get('/cardData/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) }
