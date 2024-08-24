@@ -72,46 +72,51 @@ async function run() {
       res.send(result);
     });
 
-   
+
 
     // data short by category here
     app.get('/cardData', async (req, res) => {
       const category = req.query.category;
       let query = {};
-  
+
       if (category && category !== 'null') {
-          query.category = category;
+        query.category = category;
       }
-      
+
       const result = await cardDataCollection.find(query).toArray();
       res.send(result);
-  });
-  
-
-app.post('/cartItemData', async(req,res) =>{
-  const cartData = req.body;
-  const cartItemData = await cartItemDataCollection.insertOne(cartData);
-  res.send(cartItemData)
-
-})
+    });
 
 
-app.get('/cartItemData', async(req, res) =>{
-  const  result = await cartItemDataCollection.find().toArray();
-  res.send(result)
-})
+    app.post('/cartItemData', async (req, res) => {
+      const cartData = req.body;
+      const cartItemData = await cartItemDataCollection.insertOne(cartData);
+      res.send(cartItemData)
+
+    })
 
 
-
-app.delete('/cartItemData/:id', async (req, res) => {
-  const id = req.params.id;
-  const query = { _id: new ObjectId(id) }
-  const result = await cartItemDataCollection.deleteOne(query);
-  res.send(result);
-})
+    app.get('/cartItemData', async (req, res) => {
+      const result = await cartItemDataCollection.find().toArray();
+      res.send(result)
+    })
 
 
 
+    app.delete('/cartItemData/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await cartItemDataCollection.deleteOne(query);
+      res.send(result);
+    })
+
+
+    app.get('/cardData/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await cardDataCollection.findOne(query);
+      res.send(result);
+    })
 
 
 
