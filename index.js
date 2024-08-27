@@ -105,17 +105,21 @@ async function run() {
     })
 
 
-    app.get('/wishListData', async (req, res) => {
-      const result = await wishListDataCollection.find().toArray();
+    app.get('/wishListData/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = {email : email}
+      const result = await wishListDataCollection.find(query).toArray();
       res.send(result)
     })
 
 
-    app.get('/cartItemData', async (req, res) => {
-      const result = await cartItemDataCollection.find().toArray();
+    app.get('/cartItemData/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = {email : email}
+      const result = await cartItemDataCollection.find(query).toArray();
       res.send(result)
     })
-
+    
 
 
     app.delete('/cartItemData/:id', async (req, res) => {
