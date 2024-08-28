@@ -83,7 +83,7 @@ async function run() {
     })
 
 
-  
+
     // data short by category here
     app.get('/cardData', async (req, res) => {
       const category = req.query.category;
@@ -156,6 +156,38 @@ async function run() {
 
 
 
+    
+    app.patch('/userInfo/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email }
+      const options = { upsert: true };
+      const updateUserInfo = req.body;
+      const userData = {
+        $set: {
+          name: updateUserInfo.name,
+          displayName: updateUserInfo.displayName,
+          email: updateUserInfo.email,
+          companyName: updateUserInfo.companyName,
+          country: updateUserInfo.country,
+          streetAddress: updateUserInfo.streetAddress,
+          town: updateUserInfo.town,
+          city: updateUserInfo.city,
+          zipCode: updateUserInfo.zipCode,
+          phoneNumber: updateUserInfo.phoneNumber,
+        }
+      }
+      console.log(updateUserInfo)
+      const result = await userInfoCollection.updateOne(query, userData, options);
+      res.send(result)
+    })
+
+
+    app.get('/userInfo/:email', async(req, res) =>{
+      const email = req.params.email;
+      const query = {email:email};
+      const result = await userInfoCollection.findOne(query);
+      res.send(result);
+    })
 
 
     // Send a ping to confirm a successful connection
