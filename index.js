@@ -36,6 +36,7 @@ async function run() {
     const cardDataCollection = client.db("PureLeafDB").collection("cardData");
     const cartItemDataCollection = client.db("PureLeafDB").collection("cartItemData");
     const wishListDataCollection = client.db("PureLeafDB").collection("wishListData");
+    const userInfoCollection = client.db("PureLeafDB").collection("userInfo");
 
     // jwt related api
     app.post('/jwt', async (req, res) => {
@@ -73,8 +74,16 @@ async function run() {
       res.send(result);
     });
 
+    app.get('/usersData/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await userDataCollection.findOne(query);
+      res.send(result)
+
+    })
 
 
+  
     // data short by category here
     app.get('/cardData', async (req, res) => {
       const category = req.query.category;
@@ -96,7 +105,7 @@ async function run() {
 
     })
 
-    
+
     app.post('/wishListData', async (req, res) => {
       const cartData = req.body;
       const cartItemData = await wishListDataCollection.insertOne(cartData);
@@ -107,7 +116,7 @@ async function run() {
 
     app.get('/wishListData/:email', async (req, res) => {
       const email = req.params.email;
-      const query = {email : email}
+      const query = { email: email }
       const result = await wishListDataCollection.find(query).toArray();
       res.send(result)
     })
@@ -115,11 +124,11 @@ async function run() {
 
     app.get('/cartItemData/:email', async (req, res) => {
       const email = req.params.email;
-      const query = {email : email}
+      const query = { email: email }
       const result = await cartItemDataCollection.find(query).toArray();
       res.send(result)
     })
-    
+
 
 
     app.delete('/cartItemData/:id', async (req, res) => {
