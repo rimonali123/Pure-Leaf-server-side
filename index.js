@@ -39,6 +39,7 @@ async function run() {
     const wishListDataCollection = client.db("PureLeafDB").collection("wishListData");
     const userInfoCollection = client.db("PureLeafDB").collection("userInfo");
     const userPaymentCollection = client.db("PureLeafDB").collection("paymentInfo");
+    const userOrderCollection = client.db("PureLeafDB").collection("orderInfo");
 
     // jwt related api
     app.post('/jwt', async (req, res) => {
@@ -158,7 +159,7 @@ async function run() {
 
 
 
-    
+
     app.patch('/userInfo/:email', async (req, res) => {
       const email = req.params.email;
       const query = { email: email }
@@ -184,9 +185,9 @@ async function run() {
     })
 
 
-    app.get('/userInfo/:email', async(req, res) =>{
+    app.get('/userInfo/:email', async (req, res) => {
       const email = req.params.email;
-      const query = {email:email};
+      const query = { email: email };
       const result = await userInfoCollection.findOne(query);
       res.send(result);
     })
@@ -218,7 +219,22 @@ async function run() {
     })
 
 
-    
+    app.post('/orderInfo', async (req, res) => {
+      const orderDetails = req.body;
+      const orderResult = await userOrderCollection.insertOne(orderDetails);
+      console.log('porder details', orderDetails)
+      res.send(orderResult)
+    })
+
+
+
+    app.get('/paymentInfo/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await userPaymentCollection.findOne(query);
+      res.send(result)
+    })
+
 
 
     // Send a ping to confirm a successful connection
