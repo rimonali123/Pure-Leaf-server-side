@@ -219,6 +219,13 @@ async function run() {
     })
 
 
+    app.get('/paymentInfo/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await userPaymentCollection.findOne(query);
+      res.send(result)
+    })
+
     app.post('/orderInfo', async (req, res) => {
       const orderDetails = req.body;
       const orderResult = await userOrderCollection.insertOne(orderDetails);
@@ -227,13 +234,13 @@ async function run() {
     })
 
 
-
-    app.get('/paymentInfo/:email', async (req, res) => {
+    app.get('/orderInfo/:email', async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
-      const result = await userPaymentCollection.findOne(query);
+      const result = await userOrderCollection.findOne(query);
       res.send(result)
     })
+   
 
 
 
